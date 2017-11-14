@@ -1,9 +1,7 @@
 package ssd8.socket.File;
 
 import java.io.*;
-import java.net.DatagramSocket;
-import java.net.Socket;
-import java.net.SocketAddress;
+import java.net.*;
 
 public class Handler implements Runnable {//负责与单个客户通信的线程
 
@@ -57,7 +55,7 @@ public class Handler implements Runnable {//负责与单个客户通信的线程
                             if (null != (dir = br.readLine())) {
                                 currentPath = cd(currentPath, dir);
                             } else {
-                                pw.println("please input the dirction after cd");
+                                pw.println("please input the direction after cd");
                             }
                             break;
                         case "cd..":
@@ -65,6 +63,8 @@ public class Handler implements Runnable {//负责与单个客户通信的线程
                             pw.println(currentPath + "> OK");
                             break;
                         case "get":
+                            String fileName = br.readLine();
+                            getFile(currentPath, fileName);
                             break;
                         default:
                             pw.println("Unknown Command");
@@ -73,6 +73,8 @@ public class Handler implements Runnable {//负责与单个客户通信的线程
                 }
             }
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
             if (null != socket) {
@@ -135,7 +137,7 @@ public class Handler implements Runnable {//负责与单个客户通信的线程
      * @return
      */
     private String cd(String currentPath, String dir) {
-        Boolean isExist = true;//初始设定目录存在
+        Boolean isExist = false;//初始设定目录不存在
         Boolean isDir = true;//初始设定是文件夹
 
         String newPath = currentPath;
@@ -162,7 +164,7 @@ public class Handler implements Runnable {//负责与单个客户通信的线程
         if (isExist && isDir) {
             pw.println(dir + ">OK");
         } else if (isDir && (!isExist)) {
-            pw.println(dir + "direction not exist!");
+            pw.println(dir + " direction not exist!");
         }
 
         return newPath;
@@ -195,6 +197,49 @@ public class Handler implements Runnable {//负责与单个客户通信的线程
     private String backDir(File file) {
         String parentPath = file.getParent();
         return parentPath;
+    }
+
+    private void getFile(String currentPath, String fileName) throws SocketException, IOException,
+            InterruptedException {
+
+//        pw.println(currentPath);
+
+        if (!fileExist(currentPath,fileName)){
+            pw.println(-1);
+            return;
+        }
+        File file = new File(currentPath + "\\" + fileName);
+        pw.println(file.length());
+
+        datagramSocket = new DatagramSocket(); //UDP
+        socketAddress = new InetSocketAddress(HOST, UDP_PORT);
+
+        byte[] sendInfo = new byte[SENDSIZE];
+        int size = 0;
+        DatagramPacket datagramPacket = new DatagramPacket(sendInfo, sendInfo.length, socketAddress);
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(
+                new FileInputStream(file));
+        while ((size = bufferedInputStream.read(sendInfo)) > 0 ){
+            datagramPacket.setData(sendInfo);
+            datagramSocket.send(datagramPacket);
+            sendInfo = new  byte[SENDSIZE];
+        }
+        datagramSocket.close();
+    }
+
+    private static boolean fileExist(String currentPath, String fileName) {
+        boolean isExist = false;
+
+        File currentFile = new File(currentPath);
+        File[] files = currentFile.listFiles();
+
+        for (File file : files) {
+            if (file.getName().equals(fileName) && file.isFile()) {
+                isExist = true;
+            }
+        }
+
+        return isExist;
     }
 
 
