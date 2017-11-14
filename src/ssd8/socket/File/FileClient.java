@@ -16,11 +16,11 @@ public class FileClient {
     private static final int SENDSIZE = 512; //一次传送文件的字节数
     DatagramSocket datagramSocket;
 
-    public FileClient() throws UnknownHostException, IOException{
+    public FileClient() throws UnknownHostException, IOException {
         socket = new Socket(HOST, TCP_PORT); //创建客户端套接字
     }
 
-    public static void main(String[] args) throws UnknownHostException, IOException{
+    public static void main(String[] args) throws UnknownHostException, IOException {
         new FileClient().send();
     }
 
@@ -28,7 +28,7 @@ public class FileClient {
      *
      */
     private void send() {
-        try{
+        try {
             //客户端输出流，向服务器发消息
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             //客户端输入流，接收服务器消息
@@ -39,18 +39,18 @@ public class FileClient {
             Scanner in = new Scanner(System.in);
 
             String cmd = null;
-            while ((cmd = in.next()) != null){
+            while ((cmd = in.next()) != null) {
                 pw.println(cmd);//发送给服务器
-                if (cmd.equals("cd") || cmd.equals("get")){
+                if (cmd.equals("cd") || cmd.equals("get")) {
                     String dir = in.next();
                     pw.println(dir);
                     if (cmd.equals("get")) {//下载文件
                         long fileLength = Long.parseLong(br.readLine());
-                        if (fileLength != -1 ){
+                        if (fileLength != -1) {
                             System.out.println("开始接收文件：" + dir);
                             getFile(dir, fileLength);
                             System.out.println("文件接收完毕");
-                        }else {
+                        } else {
                             System.out.println("Unknown file");
                         }
                     }
@@ -58,7 +58,7 @@ public class FileClient {
 
                 String msg = null;
                 while (null != (msg = br.readLine())) {
-                    if (msg.equals("End")){
+                    if (msg.equals("End")) {
                         break;
                     }
                     System.out.println(msg);
@@ -74,8 +74,8 @@ public class FileClient {
             pw.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
-            if (null != socket){
+        } finally {
+            if (null != socket) {
                 try {
                     socket.close();//断开连接
                 } catch (IOException e) {
@@ -98,9 +98,9 @@ public class FileClient {
         FileOutputStream fos = new FileOutputStream(new File(
                 ("D:\\Download\\") + dir));
 
-        int count = (int)(fileLength / SENDSIZE) + ((fileLength % SENDSIZE) == 0 ? 0 : 1) ;
+        int count = (int) (fileLength / SENDSIZE) + ((fileLength % SENDSIZE) == 0 ? 0 : 1);
 
-        while ((count--)>0) {
+        while ((count--) > 0) {
             datagramSocket.receive(dp); // 接收文件信息
             recInfo = dp.getData();
             fos.write(recInfo, 0, dp.getLength());

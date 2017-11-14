@@ -209,7 +209,6 @@ public class Handler implements Runnable {//负责与单个客户通信的线程
             return;
         }
         File file = new File(currentPath + "\\" + fileName);
-        pw.println(file.length());
 
         datagramSocket = new DatagramSocket(); //UDP
         socketAddress = new InetSocketAddress(HOST, UDP_PORT);
@@ -225,6 +224,7 @@ public class Handler implements Runnable {//负责与单个客户通信的线程
             sendInfo = new  byte[SENDSIZE];
         }
         datagramSocket.close();
+        pw.println(file.length());
     }
 
     private static boolean fileExist(String currentPath, String fileName) {
