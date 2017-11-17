@@ -45,7 +45,8 @@ public class FileClient {
                     String dir = in.next();
                     pw.println(dir);
                     if (cmd.equals("get")) {//下载文件
-                        long fileLength = Long.parseLong(br.readLine());
+//                        long fileLength = Long.parseLong(br.readLine());
+                        long fileLength = 2024;
                         if (fileLength != -1) {
                             System.out.println("开始接收文件：" + dir);
                             getFile(dir, fileLength);
