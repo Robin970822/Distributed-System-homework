@@ -1,4 +1,4 @@
-package ssd8.socket.File;
+package ssd8.socket.ex01;
 
 import java.io.*;
 import java.net.DatagramPacket;
@@ -7,46 +7,52 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+/**
+ * @author Robin Hanxy
+ * @version 1.0.5
+ */
 public class FileClient {
-    private static final int TCP_PORT = 2021; //连接端口
-    private static final String HOST = "127.0.0.1"; //连接地址
+    private static final int tcp_PORT = 2021; // TCP连接端口
+    private static final String HOST = "127.0.0.1"; // 连接地址
+    private static final int udp_PORT = 2020; // UDP端口
+    private static final int SENDSIZE = 1024; // 一次传送文件的字节数
     Socket socket = new Socket();
-
-    private static final int UDP_PORT = 2022; //UDP端口
-    private static final int SENDSIZE = 512; //一次传送文件的字节数
-    DatagramSocket datagramSocket;
+    DatagramSocket dgsocket;
 
     public FileClient() throws UnknownHostException, IOException {
-        socket = new Socket(HOST, TCP_PORT); //创建客户端套接字
+        socket = new Socket(HOST, tcp_PORT); //创建客户端套接字
+
     }
 
-    public static void main(String[] args) throws UnknownHostException, IOException {
+    public static void main(String[] args) throws UnknownHostException,
+            IOException {
         new FileClient().send();
     }
 
     /**
-     *
+     * send implements
      */
-    private void send() {
+    public void send() {
         try {
-            //客户端输出流，向服务器发消息
-            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            //客户端输入流，接收服务器消息
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            //装饰输出流，及时刷新
-            PrintWriter pw = new PrintWriter(bw, true);
-            //接受用户信息
-            Scanner in = new Scanner(System.in);
 
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(
+                    socket.getOutputStream()));// 客户端输出流，向服务器发消息
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    socket.getInputStream()));// 客户端输入流，接收服务器消息
+            PrintWriter pw = new PrintWriter(bw, true);//装饰输出流，及时刷新
+
+            System.out.println(br.readLine()); // 输出服务器返回连接成功的消息
+
+            Scanner in = new Scanner(System.in); // 接受用户信息
             String cmd = null;
             while ((cmd = in.next()) != null) {
-                pw.println(cmd);//发送给服务器
+                pw.println(cmd); // 发送给服务器端
                 if (cmd.equals("cd") || cmd.equals("get")) {
                     String dir = in.next();
                     pw.println(dir);
-                    if (cmd.equals("get")) {//下载文件
-//                        long fileLength = Long.parseLong(br.readLine());
-                        long fileLength = 2024;
+                    if (cmd.equals("get")) {// 下载文件
+                        long fileLength = Long.parseLong(br.readLine());
+                        System.out.println("文件大小为：" + fileLength);
                         if (fileLength != -1) {
                             System.out.println("开始接收文件：" + dir);
                             getFile(dir, fileLength);
@@ -56,17 +62,16 @@ public class FileClient {
                         }
                     }
                 }
-
                 String msg = null;
                 while (null != (msg = br.readLine())) {
-                    if (msg.equals("End")) {
+                    if (msg.equals("CmdEnd")) {
                         break;
                     }
-                    System.out.println(msg);
+                    System.out.println(msg); // 输出服务器返回的消息
                 }
 
                 if (cmd.equals("bye")) {
-                    break;
+                    break; // 退出
                 }
             }
             in.close();
@@ -78,7 +83,7 @@ public class FileClient {
         } finally {
             if (null != socket) {
                 try {
-                    socket.close();//断开连接
+                    socket.close(); // 断开连接
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -87,28 +92,30 @@ public class FileClient {
     }
 
     /**
-     * @param dir
-     * @param fileLength
+     * Gets a file by name and length
+     *
+     * @param fileName the name of the file that wants getting.
+     * @param fileLength the length of the file that wants getting.
      * @throws IOException
      */
-    private void getFile(String dir, long fileLength) throws IOException {
+    private void getFile(String fileName, long fileLength) throws IOException {
         DatagramPacket dp = new DatagramPacket(new byte[SENDSIZE], SENDSIZE);
-        datagramSocket = new DatagramSocket(UDP_PORT);// UDP连接
-        String msg = null;
+        dgsocket = new DatagramSocket(udp_PORT);// UDP连接
         byte[] recInfo = new byte[SENDSIZE];
         FileOutputStream fos = new FileOutputStream(new File(
-                ("D:\\Download\\") + dir));
+                ("D:\\Download\\") + fileName));
 
         int count = (int) (fileLength / SENDSIZE) + ((fileLength % SENDSIZE) == 0 ? 0 : 1);
 
         while ((count--) > 0) {
-            datagramSocket.receive(dp); // 接收文件信息
+            dgsocket.receive(dp); // 接收文件信息
             recInfo = dp.getData();
             fos.write(recInfo, 0, dp.getLength());
             fos.flush();
         }
 
-        datagramSocket.close();
+        dgsocket.close();
         fos.close();
     }
 }
+
