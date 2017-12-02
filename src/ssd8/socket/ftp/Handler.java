@@ -1,4 +1,4 @@
-package ssd8.socket.ex01;
+package ssd8.socket.ftp;
 
 import java.io.*;
 import java.net.*;
@@ -28,7 +28,12 @@ public class Handler implements Runnable { // 负责与单个客户通信的线�
         this.socket = socket;
     }
 
-    public void initStream() throws IOException { // 初始化输入输出流对象方法
+    /**
+     * 初始化输入输出流对象方法
+     *
+     * @throws IOException
+     */
+    public void initStream() throws IOException {
         br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         bw = new BufferedWriter(
                 new OutputStreamWriter(socket.getOutputStream()));

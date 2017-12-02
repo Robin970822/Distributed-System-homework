@@ -1,4 +1,4 @@
-package ssd8.socket.ex01;
+package ssd8.socket.ftp;
 
 import java.io.IOException;
 import java.net.ServerSocket;
