@@ -9,15 +9,11 @@ import java.net.Socket;
 /**
  * Class <em>HttpClient</em> is a class representing a simple HTTP client.
  *
- * @author wben
+ * @author Hanxy
+ * @version 1.0.1
  */
 
 public class HttpClient {
-
-	/**
-	 * default HTTP port is port 80
-	 */
-	private static int port = 80;
 
 	/**
 	 * Allow a maximum buffer size of 8192 bytes
@@ -58,12 +54,12 @@ public class HttpClient {
 	 * StringBuffer storing the response.
 	 */
 	private StringBuffer response = null;
-	
+
 	/**
 	 * String to represent the Carriage Return and Line Feed character sequence.
 	 */
 	static private String CRLF = "\r\n";
-	static private String root = "D:\\Client";
+	static private String pathname = "D:\\Client";
 
 	/**
 	 * HttpClient constructor;
@@ -100,11 +96,14 @@ public class HttpClient {
 	/**
 	 * <em>processGetRequest</em> process the input GET request.
 	 */
-	public void processGetRequest(String request) throws Exception {
+	public void processGetRequest(String request, String host) throws Exception {
 		/**
 		 * Send the request to the server.
 		 */
-		request += CRLF + CRLF;
+		request += CRLF;
+		request += "Host: " + host + CRLF;
+		// 长连接阻塞
+		request += "Connection: Close" + CRLF + CRLF;
 		buffer = request.getBytes();
 		ostream.write(buffer, 0, request.length());
 		ostream.flush();
@@ -113,36 +112,59 @@ public class HttpClient {
 		 */
 		processResponse();
 	}
-	
+
 	/**
 	 * <em>processPutRequest</em> process the input PUT request.
 	 */
-	public void processPutRequest(String request) throws Exception {
-		//=======start your job here============//
+	public void processPutRequest(String request, String host) throws Exception {
+		// =======start your job here============//
 		String[] reqs = request.split(" ");
 		File file = null;
 
-		request += CRLF + CRLF;
+		request += CRLF;
+		request += "Host: " + host + CRLF;
 
 		if (reqs.length == 3) {
-		    String fileDir = reqs[1];
-		    file = new File(root + fileDir);
-		    if (file.exists()){
-		        request += "Content-length: " + file.length() + CRLF + CRLF;
-		        System.out.println(file.length());
-            }else {
-		        request += "Content-length: 0" + CRLF + CRLF;
-            }
-        }else {
-		    request += "Content-length: 0" + CRLF + CRLF;
-        }
+			String fileDir = reqs[1];
+			file = new File(pathname + fileDir);
+			if (file.exists()) {
+				request += "Content-length: " + file.length() + CRLF + CRLF;
+			} else {
+				request += "Content-length: 0" + CRLF + CRLF;
+			}
+		} else {
+			request += "Content-length: 0" + CRLF + CRLF;
+		}
 
-        buffer = request.getBytes();
+		buffer = request.getBytes();
 		ostream.write(buffer, 0, request.length());
-		
-		//=======end of your job============//
+
+		if (file != null && file.exists()) {
+			getFileBody(file);
+		}
+
+		ostream.flush();
+		processResponse();
+		// =======end of your job============//
 	}
-	
+
+	/**
+	 * 得到文件的内容
+	 * 
+	 * @param saveFile
+	 *            需要服务器保存的文件
+	 * @throws Exception
+	 */
+	private void getFileBody(File saveFile) throws Exception {
+		BufferedInputStream bufferedInputStream = new BufferedInputStream(
+				new FileInputStream(saveFile));
+		while ((bufferedInputStream.read(buffer)) > 0) {
+			ostream.write(buffer, 0, buffer.length);
+			buffer = new byte[buffer_size];
+		}
+		bufferedInputStream.close();
+	}
+
 	/**
 	 * <em>processResponse</em> process the server response.
 	 * 
@@ -175,7 +197,7 @@ public class HttpClient {
 		 * Read the contents and add it to the response StringBuffer.
 		 */
 		while (istream.read(buffer) != -1) {
-			response.append(new String(buffer,"iso-8859-1"));
+			response.append(new String(buffer, "iso-8859-1"));
 		}
 	}
 

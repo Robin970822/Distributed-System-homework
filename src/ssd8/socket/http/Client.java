@@ -4,30 +4,14 @@ import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Class <em>Client</em> is a class representing a simple HTTP client.
  *
- * @author wben
+ * @author Hanxy
  */
 
 public class Client {
-
-	/**
-	 * default HTTP port is port 80
-	 */
-	private static int port = 80;
-
-	/**
-	 * Allow a maximum buffer size of 8192 bytes
-	 */
-	private static int buffer_size = 8192;
-
-	/**
-	 * The end of line character sequence.
-	 */
-	private static String CRLF = "\r\n";
 
 	/**
 	 * Input is taken from the keyboard
@@ -70,13 +54,13 @@ public class Client {
 				/**
 				 * Ask the client to process the GET request.
 				 */
-				myClient.processGetRequest(request);
+				myClient.processGetRequest(request, args[0]);
 				
 			} else if (request.startsWith("PUT")) {
 				/**
 				 * Ask the client to process the PUT request.
 				 */
-				myClient.processPutRequest(request);
+				myClient.processPutRequest(request, args[0]);
 			} else {
 				/**
 				 * Do not process other request.
