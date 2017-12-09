@@ -127,7 +127,7 @@ public class Handler implements Runnable {
 							ostream.write(buffer, 0, response.length());
 							ostream.flush();
 						} else {
-							String response = "HTTP/1.1 500 Internal Server Error"
+							String response = "HTTP/1.1 500 Internal ProxyServer Error"
 									+ CRLF + CRLF;
 							buffer = response.getBytes();
 							ostream.write(buffer, 0, response.length());
@@ -138,7 +138,7 @@ public class Handler implements Runnable {
 					boolean isFile = saveFile.exists();
 					if (!isFile) {
 						if (!createFile(pathname + dirname)) {
-							String response = "HTTP/1.1 500 Internal Server Error"
+							String response = "HTTP/1.1 500 Internal ProxyServer Error"
 									+ CRLF + CRLF;
 							buffer = response.getBytes();
 							ostream.write(buffer, 0, response.length());
@@ -176,7 +176,7 @@ public class Handler implements Runnable {
 						if (isFile) {
 							// 已有文件的修改
 							String response = "HTTP/1.1 200 OK" + CRLF;
-							response += "Server: " + "Hanxy/1.0" + CRLF;
+							response += "ProxyServer: " + "Hanxy/1.0" + CRLF;
 							response += "Content-type: " + fileType + CRLF;
 							response += "Content-Location: " + dirname + CRLF
 									+ CRLF;
@@ -186,7 +186,7 @@ public class Handler implements Runnable {
 						} else {
 							// 新文件的创建
 							String response = "HTTP/1.1 201 Created" + CRLF;
-							response += "Server: " + "Hanxy/1.0" + CRLF;
+							response += "ProxyServer: " + "Hanxy/1.0" + CRLF;
 							response += "Content-type: " + fileType + CRLF;
 							response += "Content-Location: " + dirname + CRLF
 									+ CRLF;
@@ -244,7 +244,7 @@ public class Handler implements Runnable {
                 fileSize = saveFile.length();
 
                 String response = "HTTP/1.1 200 OK" + CRLF;
-                response += "Server: Hanxy/1.0" + CRLF;
+                response += "ProxyServer: Hanxy/1.0" + CRLF;
                 response += "Content-type: " + fileType + CRLF;
                 response += "Content-length: " + fileSize + CRLF + CRLF;
 

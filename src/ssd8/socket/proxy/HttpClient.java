@@ -1,4 +1,4 @@
-package ssd8.socket.http;
+package ssd8.socket.proxy;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
