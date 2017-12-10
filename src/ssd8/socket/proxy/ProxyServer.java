@@ -24,7 +24,7 @@ public class ProxyServer {
         // 由JVM根据系统的情况来决定线程的数量
         executorService = Executors.newFixedThreadPool(Runtime.getRuntime().
                 availableProcessors() * POOLSIZE);
-        System.out.println("PORT 8000 is listening you!");
+        System.out.println("PORT 8000 is listening to you!");
     }
 
     /**

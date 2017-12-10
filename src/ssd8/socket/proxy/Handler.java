@@ -4,8 +4,10 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
+import java.net.URLConnection;
 
 /**
  * @author Hanxy
@@ -23,8 +25,8 @@ public class Handler implements Runnable {// 负责与单个客户通信的线�
     private static String CRLF = "\r\n";
 
     // 代理服务器作为服务端的输入输出流
-    BufferedReader br = null;
-    BufferedOutputStream ostream = null;
+    private BufferedReader br = null;
+    private BufferedOutputStream ostream = null;
 
     /**
      * 初始化输入输出流对象方法
@@ -48,8 +50,6 @@ public class Handler implements Runnable {// 负责与单个客户通信的线�
         try {
             initStream();
             String info = null;
-
-            URL url = null;
 
             //获取请求信息
             while ((info = br.readLine()) != null) {
@@ -97,14 +97,13 @@ public class Handler implements Runnable {// 负责与单个客户通信的线�
     private boolean doGet(String info) throws Exception {
         URL url = null;
 
-        String[] orders = info.split(" ");//分割请求
-        if (!(orders.length == 3)) {
+        String[] reqs = info.split(" ");//分割请求
+        if (!(reqs.length == 3)) {
             badRequest();
             return false;
         } else {
-            url = new URL(orders[1]);
+            url = new URL(reqs[1]);
             requestGet(url);
-            System.out.println("Get to " + url.getHost());
             responseGet();
         }
         return true;
@@ -126,7 +125,7 @@ public class Handler implements Runnable {// 负责与单个客户通信的线�
     }
 
     /**
-     * 得到GET回复，返回给代理服务器客户端
+     * 得到GET回复，返回给客户端
      *
      * @throws IOException
      */
