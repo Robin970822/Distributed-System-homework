@@ -16,7 +16,7 @@ import java.util.Arrays;
  *
  * @author Hanxy
  * @version 1.0
- * <p>
+ *
  */
 public class RMIClient {
 

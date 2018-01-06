@@ -1,23 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex3/Exercise3/src/com/nwpu/bean/Meeting.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex3/Exercise3/src/com/nwpu/client/RMIClient.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex3/Exercise3/src/com/nwpu/interfaces/RmiInterface.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex3/Exercise3/src/com/nwpu/interfaces/impl/RmiInterfaceImpl.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex3/Exercise3/src/com/nwpu/server/RMIServer.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex3/Exercise3/src/com/nwpu/util/TimeQuantum.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_exam2/MyExam2/src/com/nwpu/bean/Message.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_exam2/MyExam2/src/com/nwpu/bean/User.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_exam2/MyExam2/src/com/nwpu/client/RMIClient.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_exam2/MyExam2/src/com/nwpu/interfaces/RMIInterface.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_exam2/MyExam2/src/com/nwpu/interfaces/RMIInterfaceImpl.java" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_exam2/MyExam2/src/com/nwpu/server/RMIServer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/../../2014303370-14011403-ex4-党铭瑷/SSD8EX4/src/service/WebServer.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex4/WebExercise4/src/com/nwpu/fy/client/Client.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex4/WebExercise4/src/com/nwpu/fy/service/Project.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/../../2014303376_冯勇_ex4/WebExercise4/src/com/nwpu/fy/service/Service.java" charset="GBK" />
     <file url="file://$PROJECT_DIR$/src/ssd8/socket/ftp/FileClient.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/ssd8/socket/ftp/FileServer.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/ssd8/socket/ftp/Handler.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/ssd8/socket/http/Handler.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/ssd8/socket/http/HttpClient.java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/ssd8/socket/http/Server.java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/ssd8/webservice/client/Add.java" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/src/ssd8/webservice/service/com/list/Add.java" charset="GBK" />
   </component>
 </project>

@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 /**
- * Class <em>Client</em> is a class representing a simple HTTP client.
+ * Class <em>ssd8.webservice.client.TODOClient</em> is a class representing a simple HTTP client.
  *
  * @author Hanxy
  */
@@ -35,7 +35,7 @@ public class Client {
 			 * Parse the input arguments.
 			 */
 			if (args.length != 1) {
-				System.err.println("Usage: Client <server>");
+				System.err.println("Usage: ssd8.webservice.client.TODOClient <server>");
 				System.exit(0);
 			}
 

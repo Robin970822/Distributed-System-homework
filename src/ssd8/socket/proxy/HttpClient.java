@@ -59,7 +59,7 @@ public class HttpClient {
 	 * String to represent the Carriage Return and Line Feed character sequence.
 	 */
 	static private String CRLF = "\r\n";
-	static private String pathname = "D:\\Client";
+	static private String pathname = "D:\\ssd8.webservice.client.TODOClient";
 
 	/**
 	 * HttpClient constructor;
